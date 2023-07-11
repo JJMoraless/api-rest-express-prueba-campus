@@ -15,7 +15,7 @@ export const producto = {
     console.log(data);
     return data;
   }, 
- 
+
   saveProducBodega: async ({ id_bodega, producto, cantidad } = {}) => {
     const [{ insertId }] = await db.query(
       "INSERT INTO productos SET ?",
@@ -31,7 +31,7 @@ export const producto = {
     const [data] = await db.query("SELECT * FROM inventarios WHERE id_bodega = ? AND  id_producto =? ",[id_bodega, id_producto])
     if(data === []) {
       const dataInventario = { id_producto, id_bodega, cantidad }
-      await db.query("INSERT INTO inventarios SET ?", dataInventario)
+      const resInsert = await db.query("INSERT INTO inventarios SET ?", dataInventario)
       return {
         menssage: "insertado en inventario"
       }
@@ -39,7 +39,8 @@ export const producto = {
 
     const res = await db.query("UPDATE inventarios SET cantidad = ? WHERE id_bodega = ? AND id_producto = ?", [cantidad, id_bodega, id_producto])
     return {
-      message : "actualizada la cantidad en inventario"
+      message : "actualizada la cantidad en inventarios"
     }
   }
 }
+
