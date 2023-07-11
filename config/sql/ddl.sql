@@ -19,8 +19,8 @@ CREATE TABLE `productos`(
     `estado` TINYINT(4),
     `created_by` BIGINT(20) UNSIGNED,
     `update_by` BIGINT(20) UNSIGNED,
-    `created_at` TIMESTAMP  DEFAULT(NOW()),
-    `updated_at` TIMESTAMP ,
+    `created_at` TIMESTAMP DEFAULT(NOW()),
+    `updated_at` TIMESTAMP,
     `deleted_at` TIMESTAMP 
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE `inventarios`(
     `created_at` TIMESTAMP DEFAULT(NOW()),
     `updated_at` TIMESTAMP,
     `deleted_at` TIMESTAMP,
-    PRIMARY KEY(id,id_bodega, id_producto )
+    PRIMARY KEY(id )
 );
 
 DROP TABLE bodegas;
@@ -89,10 +89,13 @@ ALTER TABLE
 
 ALTER TABLE
     `historiales` ADD CONSTRAINT `historiales_id_bodega_origen_foreign` FOREIGN KEY(`id_bodega_origen`) REFERENCES `bodegas`(`id`);
+
 ALTER TABLE
     `inventarios` ADD CONSTRAINT `inventarios_update_by_foreign` FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
     `historiales` ADD CONSTRAINT `historiales_update_by_foreign` FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
     `bodegas` ADD CONSTRAINT `bodegas_update_by_foreign` FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
 ALTER TABLE
@@ -113,3 +116,11 @@ ALTER TABLE
     `inventarios` ADD CONSTRAINT `inventarios_created_by_foreign` FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
 ALTER TABLE
     `historiales` ADD CONSTRAINT `historiales_id_bodega_destino_foreign` FOREIGN KEY(`id_bodega_destino`) REFERENCES `bodegas`(`id`);
+
+ALTER TABLE db_inventario.inventarios
+    ADD CONSTRAINT fk_bodega FOREIGN KEY(`id_bodega`) REFERENCES `bodegas`(`id`);
+
+
+
+
+

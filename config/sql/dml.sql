@@ -1,11 +1,6 @@
 
 
 
-
-
-
-
-
 INSERT INTO `bodegas` (`id`, `nombre`, `id_responsable`, `estado`, `created_by`, `update_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (11, 'bodega0', 16, 1, 16, NULL, '2022-06-02 15:33:48', NULL, NULL),
 (12, 'bodega1', 18, 1, 18, NULL, '2022-06-02 15:33:48', NULL, NULL),
@@ -160,3 +155,26 @@ INSERT INTO `users` (`id`, `nombre`, `email`, `email_verified_at`, `estado`, `cr
 (18, 'juan7', 'juan 7@hotmail.com', NULL, 1, NULL, NULL, NULL, '12345', NULL, NULL, NULL),
 (19, 'juan8', 'juan 8@hotmail.com', NULL, 1, NULL, NULL, NULL, '12345', NULL, NULL, NULL),
 (20, 'juan9', 'juan 9@hotmail.com', NULL, 1, NULL, NULL, NULL, '12345', NULL, NULL, NULL);
+
+
+
+
+
+SELECT * FROM bodegas ORDER BY nombre ASC;
+
+
+SELECT p.nombre, i.cantidad AS cantidad
+FROM productos AS p
+INNER JOIN inventarios AS i 
+ON p.id = i.id_producto
+GROUP BY p.nombre
+ORDER BY i.cantidad DESC ;
+
+
+SELECT  p.nombre, sum(i.cantidad) AS cantidad
+FROM productos AS p
+INNER JOIN inventarios AS i 
+ON p.id = i.id_producto
+GROUP BY p.nombre
+ORDER BY cantidad DESC;
+
