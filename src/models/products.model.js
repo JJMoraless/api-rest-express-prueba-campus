@@ -8,23 +8,38 @@ export const producto = {
       INNER JOIN inventarios AS i
       ON p.id = i.id_producto
       GROUP BY p.nombre
-      ORDER BY cantidad DESC;
+      ORDER BY total DESC;
     `;
     const [data] = await db.query(query);
-    db.end();
+    // db.end();
+    console.log(data);
     return data;
+  }, 
+ 
+  saveProducBodega: async ({ id_bodega, producto, cantidad } = {}) => {
+    const [{ insertId }] = await db.query(
+      "INSERT INTO productos SET ?",
+      producto
+    );
+    const data = { id_producto: insertId, id_bodega, cantidad };
+    const [resInvetario] = await db.query("INSERT INTO inventarios SET ?", data);
+    const idInvetario = resInvetario.insertId
+    return idInvetario
   },
 
-  saveProducBodega: async ({ idBodega, cantidad } = {}) => {
-    const product = {
-      nombre: "jhon",
-      descripcion: "uwu",
-      estado: 1,
-    };
-    const [{insertId}] = await db.query("INSERT INTO productos SET ?", product);
-    db.end()
-    console.log(insertId);
-  },
-};
+  saveProductBodegaExist: async ({ id_producto, id_bodega, cantidad } = {})  => {
+    const [data] = await db.query("SELECT * FROM inventarios WHERE id_bodega = ? AND  id_producto =? ",[id_bodega, id_producto])
+    if(data === []) {
+      const dataInventario = { id_producto, id_bodega, cantidad }
+      await db.query("INSERT INTO inventarios SET ?", dataInventario)
+      return {
+        menssage: "insertado en inventario"
+      }
+    }
 
-producto.saveProducBodega();
+    const res = await db.query("UPDATE inventarios SET cantidad = ? WHERE id_bodega = ? AND id_producto = ?", [cantidad, id_bodega, id_producto])
+    return {
+      message : "actualizada la cantidad en inventario"
+    }
+  }
+}

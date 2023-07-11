@@ -116,7 +116,6 @@ ALTER TABLE
     `inventarios` ADD CONSTRAINT `inventarios_created_by_foreign` FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
 ALTER TABLE
     `historiales` ADD CONSTRAINT `historiales_id_bodega_destino_foreign` FOREIGN KEY(`id_bodega_destino`) REFERENCES `bodegas`(`id`);
-
 ALTER TABLE db_inventario.inventarios
     ADD CONSTRAINT fk_bodega FOREIGN KEY(`id_bodega`) REFERENCES `bodegas`(`id`);
 
