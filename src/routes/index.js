@@ -3,25 +3,27 @@ import { readdirSync } from "fs";
 import { _dirname } from "../utils/vars.js";
 const PATH_ROUTERS = _dirname(import.meta.url);
 const router = Router();
-
 /**
+ * 
  * este archivo tiene logica de un cargador de rutas automatico
- * si se crea un archivo sin exportar un router
- *  genera error en toda la app uwu
- */
+ * por lo que, si se crea un archivo en esta carpeta 
+ * y no se exporta un router, se genera error en toda la app uwu
+ * 
+*/
+
 
 
 /**
- * recive un string
- * divide el string por . y devuelve el primer elemento
+ * obtiene la primer palabra de un archivo, elimando las demas palabras despues del punto
+ * @param {String} fileName - nombre del archivo
+ * @returns {String}
  */
-const filesNames = readdirSync(PATH_ROUTERS);
-
 const cleanFile = (fileName) => {
   const file = fileName.split(".").shift();
   return file;
 };
 
+const filesNames = readdirSync(PATH_ROUTERS);
 filesNames.forEach(async (fileName) => {
   const cleanName = cleanFile(fileName);
   if (cleanName === "index") return;
