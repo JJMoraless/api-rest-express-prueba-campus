@@ -19,10 +19,10 @@ export const saveProductBodega = async ({ body }, res) => {
   }
 };
 
-export const saveProductExistBodega = async ({ params, body }, res) => {
-  const { idProduct, idBodega } = params;
+export const saveProductExistBodega = async ({ body, params }, res) => {
   try {
-    const {cantidad} = body;
+    const { cantidad } = body;
+    const { idProduct, idBodega } = params;
     const message = await producto.saveProductBodegaExist({
       id_producto: idProduct,
       id_bodega: idBodega,
