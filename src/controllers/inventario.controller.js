@@ -1,5 +1,10 @@
-import { inventario } from "../models/inventario.model";
+import { inventario } from "../models/inventario.model.js";
 
 export const trasladarProductos = async ({body}, res) => {
-    await inventario.transladarProducto(body)
+    try {
+        await inventario.transladarProducto(body)
+        res.send({message: "transladado con exito"})
+    } catch (error) {
+        res.status(401).send(error.message)        
+    }
 };

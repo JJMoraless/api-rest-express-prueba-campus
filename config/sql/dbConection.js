@@ -4,8 +4,8 @@ const getConnection = async () => {
   try {
     return mysql.createPool({
       host: "localhost",
-      user: "root",
-      password: "",
+      user: "campus",
+      password: "campus2023",
       database: "db_inventario",
       port: 3306,
     });

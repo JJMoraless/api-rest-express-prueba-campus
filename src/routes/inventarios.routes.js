@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { trasladarProductos } from "../controllers/inventario.controller";
+import { trasladarProductos } from "../controllers/inventario.controller.js";
 
 const router = Router();
-router.get("/translado", trasladarProductos )
+router.post("/translado", trasladarProductos )
 
 export { router };
