@@ -21,14 +21,11 @@ export const producto = {
       "INSERT INTO productos SET ?",
       producto
     );
-
     const data = { id_producto: insertId, id_bodega, cantidad };
-
     const [resInvetario] = await db.query(
       "INSERT INTO inventarios SET ?",
       data
     );
-
     const idInvetario = resInvetario.insertId;
     return idInvetario;
   },
@@ -36,30 +33,22 @@ export const producto = {
   saveProductBodegaExist: async ({ id_producto, id_bodega, cantidad } = {}) => {
     const querySelect = "SELECT * FROM inventarios WHERE id_bodega = ? AND  id_producto = ? ";
     const [data] = await db.query(querySelect, [id_bodega, id_producto]);
-    // console.log(data);
-
     if (!data.length) {
-      console.log("se inserto");
       const queryInsert = "INSERT INTO inventarios SET ?";
       const dataInventario = { id_producto, id_bodega, cantidad };
-      const resInsert = await db.query(queryInsert, dataInventario);
+      await db.query(queryInsert, dataInventario);
       return {
         menssage: "insertado en inventario",
       };
     }
 
     const queryUpdate = "UPDATE inventarios SET cantidad = ? WHERE id_bodega = ? AND id_producto = ?";
-    const res = await db.query(queryUpdate, [cantidad, id_bodega, id_producto]);
-    console.log("se actualizo");
-
+    await db.query(queryUpdate, [cantidad, id_bodega, id_producto]);
     return {
       message: "actualizada la cantidad en inventarios",
     };
   },
 
-  transladarProducto: () => {
-
-  },
 };
 
-// producto.saveProductBodegaExist({ id_producto: 12, id_bodega: 12, cantidad: 23})
+
