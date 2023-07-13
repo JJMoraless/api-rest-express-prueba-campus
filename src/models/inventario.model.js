@@ -1,27 +1,47 @@
 import { db } from "../../config/sql/dbConection.js";
+import { producto } from "./products.model.js";
 
-const inventario = {
-  transladarProducto: async ({ cantidad, idProducto, idOrigen, idDestino} = {}) => {
+export const inventario = {
+  transladarProducto: async ({ cantidad, idProducto, idOrigen, idDestino}) => {
 
-    let querySelect = "SELECT id, cantidad FROM inventarios WHERE id_producto = ? AND id_bodega = ?";
-    const [[{cantidad: cantidadActual, id : idInventarioActual}]] = await db.query(querySelect, [idProducto, idOrigen]);
-    console.log({cantidadActual, idInventarioActual });
+    let querySelect = "SELECT * FROM inventarios WHERE id_producto = ? AND id_bodega = ?";
+    let queryUpdate = "UPDATE inventarios SET ?  WHERE id_producto = ? AND id_bodega = ?";
+    
+    const [dataOrigen] = await db.query(querySelect, [idProducto, idOrigen]);
+    const  [dataDestino] = await db.query(querySelect, [idProducto, idDestino]);
 
-    if(cantidad > cantidadActual){
-      throw new Error(`cantidad ${cantidad} es mayor a la disponible ${cantidadActual}`)
+    // - Saber total de productos de la bodega de origen
+    const [{cantidad: totalOrigen}] = dataOrigen
+
+    if(!dataOrigen.length) {
+      throw new Error(`no existen productos con id ${idProducto} en la bodega origen`)
     }
 
-    // let queryUpdate = "UPDATE inventarios SET ?  WHERE id = ?";
-    // const data = await db.query(queryUpdate, [{"cantidad": cantidadActual - cantidad}, idInventarioActual ]);
+    if(cantidad > totalOrigen){
+      throw new Error(`cantidad ${cantidad} es mayor a la disponible ${totalOrigen}`)
+    }
 
-    const  [[{cantidad: dantidadDestino}]] = await db.query(querySelect, [idProducto, idDestino]);
-    console.log({dantidadDestino});
+    if(!dataDestino.length){
+      producto.saveProductBodegaExist({ id_producto:idProducto,id_bodega:idDestino, cantidad: 0})
+    }
 
-    // queryUpdate = "UPDATE inventarios SET ?  WHERE id_bodega = ? AND id_produto = ?";
-    // await db.query(queryUpdate, [{"cantidad":  cantidad}, idDestino, idProducto ]);
+    // - Saber total de productos que hay en el destino
+    const  [[{cantidad: totalDestino, id:idInventario}]] = await db.query(querySelect, [idProducto, idDestino]);
 
-    
+    // - Sacar productos del origen
+    await db.query(queryUpdate, [{"cantidad": totalOrigen - cantidad}, idProducto, idOrigen  ]);
+
+    // - Ingresar productos sacados del origen al destino
+    await db.query(queryUpdate, [{"cantidad": totalDestino + cantidad }, idProducto, idDestino ]);
+
+    let queryInsert = "INSERT INTO historiales SET ?"
+    const dataHistorial = {
+      cantidad,
+      id_bodega_origen: idOrigen,
+      id_bodega_destino: idDestino,
+      id_inventario:idInventario
+    }
+    await db.query(queryInsert, dataHistorial, idInventario )
   },
 };
 
-inventario.transladarProducto({idProducto:33, idOrigen:11, idDestino: 12, cantidad: 100 });
