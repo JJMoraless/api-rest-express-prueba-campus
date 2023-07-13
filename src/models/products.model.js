@@ -23,10 +23,12 @@ export const producto = {
     );
 
     const data = { id_producto: insertId, id_bodega, cantidad };
+
     const [resInvetario] = await db.query(
       "INSERT INTO inventarios SET ?",
       data
     );
+
     const idInvetario = resInvetario.insertId;
     return idInvetario;
   },
@@ -34,7 +36,7 @@ export const producto = {
   saveProductBodegaExist: async ({ id_producto, id_bodega, cantidad } = {}) => {
     const querySelect = "SELECT * FROM inventarios WHERE id_bodega = ? AND  id_producto = ? ";
     const [data] = await db.query(querySelect, [id_bodega, id_producto]);
-    console.log(data);
+    // console.log(data);
 
     if (!data.length) {
       console.log("se inserto");
