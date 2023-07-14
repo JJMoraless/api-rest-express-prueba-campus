@@ -17,15 +17,15 @@ export const producto = {
   },
 
   saveProducBodega: async ({ id_bodega, producto, cantidad } = {}) => {
-    const [{ insertId }] = await db.query(
-      "INSERT INTO productos SET ?",
-      producto
-    );
-    const data = { id_producto: insertId, id_bodega, cantidad };
-    const [resInvetario] = await db.query(
-      "INSERT INTO inventarios SET ?",
-      data
-    );
+    const [{ insertId }] = await db.query("INSERT INTO productos SET ?", producto);
+
+    const data = {
+      id_producto: insertId,
+      id_bodega, 
+      cantidad 
+    };
+    
+    const [resInvetario] = await db.query("INSERT INTO inventarios SET ?", data);
     const idInvetario = resInvetario.insertId;
     return idInvetario;
   },

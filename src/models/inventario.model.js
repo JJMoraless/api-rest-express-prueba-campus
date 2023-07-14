@@ -23,7 +23,7 @@ export const inventario = {
     console.log({dataDestino, dataOrigen});
 
     if(!dataDestino.length){
-      console.log("destino no tiene esos prouctos | insertandoo....");
+      console.log("destino no tiene esos prouctos | insertando producto con 0....");
       await producto.saveProductBodegaExist({ id_producto:idProducto,id_bodega:idDestino, cantidad: 0})
     }
     
