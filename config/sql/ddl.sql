@@ -1,9 +1,9 @@
 
+
 CREATE DATABASE db_inventario;
 USE db_inventario;
 DROP DATABASE db_inventario;
 SHOW DATABASES;
-
 SHOW TABLES;
 
 
@@ -24,6 +24,9 @@ CREATE TABLE `productos`(
     `deleted_at` TIMESTAMP 
 );
 
+/* -------------------------------------------------------------------------- */
+/*                                 Historiales                                */
+/* -------------------------------------------------------------------------- */
 DROP TABLE historiales;
 CREATE TABLE `historiales`(
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -37,6 +40,11 @@ CREATE TABLE `historiales`(
     `updated_at` TIMESTAMP,
     `deleted_at` TIMESTAMP
 );
+
+/* -------------------------------------------------------------------------- */
+/*                                 Inventarios                                */
+/* -------------------------------------------------------------------------- */
+
 DROP TABLE inventarios;
 CREATE TABLE `inventarios`(
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -51,6 +59,11 @@ CREATE TABLE `inventarios`(
     PRIMARY KEY(id )
 );
 
+/* -------------------------------------------------------------------------- */
+/*                                   Bodegas                                  */
+/* -------------------------------------------------------------------------- */
+
+
 DROP TABLE bodegas;
 CREATE TABLE `bodegas`(
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -63,6 +76,11 @@ CREATE TABLE `bodegas`(
     `updated_at` TIMESTAMP,
     `deleted_at` TIMESTAMP
 );
+
+/* -------------------------------------------------------------------------- */
+/*                                    Users                                   */
+/* -------------------------------------------------------------------------- */
+
 
 DROP TABLE users;
 CREATE TABLE `users`(
@@ -83,39 +101,63 @@ CREATE TABLE `users`(
 
 ALTER TABLE
     `users` ADD UNIQUE `users_email_unique`(`email`);
-ALTER TABLE
-    `inventarios` ADD CONSTRAINT `inventarios_id_bodega_foreign` FOREIGN KEY(`id_bodega`) REFERENCES `bodegas`(`id`);
-
 
 ALTER TABLE
-    `historiales` ADD CONSTRAINT `historiales_id_bodega_origen_foreign` FOREIGN KEY(`id_bodega_origen`) REFERENCES `bodegas`(`id`);
+    `inventarios` ADD CONSTRAINT `inventarios_id_bodega_foreign` 
+    FOREIGN KEY(`id_bodega`) REFERENCES `bodegas`(`id`);
 
 ALTER TABLE
-    `inventarios` ADD CONSTRAINT `inventarios_update_by_foreign` FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+    `historiales` ADD CONSTRAINT `historiales_id_bodega_origen_foreign` 
+    FOREIGN KEY(`id_bodega_origen`) REFERENCES `bodegas`(`id`);
 
 ALTER TABLE
-    `historiales` ADD CONSTRAINT `historiales_update_by_foreign` FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+    `inventarios` ADD CONSTRAINT `inventarios_update_by_foreign` 
+    FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
 
 ALTER TABLE
-    `bodegas` ADD CONSTRAINT `bodegas_update_by_foreign` FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+    `historiales` ADD CONSTRAINT `historiales_update_by_foreign` 
+    FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
-    `inventarios` ADD CONSTRAINT `inventarios_id_producto_foreign` FOREIGN KEY(`id_producto`) REFERENCES `productos`(`id`);
+    `bodegas` ADD CONSTRAINT `bodegas_update_by_foreign` 
+    FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
-    `bodegas` ADD CONSTRAINT `bodegas_created_by_foreign` FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+    `inventarios` ADD CONSTRAINT `inventarios_id_producto_foreign` 
+    FOREIGN KEY(`id_producto`) REFERENCES `productos`(`id`);
+
 ALTER TABLE
-    `productos` ADD CONSTRAINT `productos_created_by_foreign` FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+    `bodegas` ADD CONSTRAINT `bodegas_created_by_foreign` 
+    FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
-    `historiales` ADD CONSTRAINT `historiales_created_by_foreign` FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+    `productos` ADD CONSTRAINT `productos_created_by_foreign` 
+    FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
-    `productos` ADD CONSTRAINT `productos_update_by_foreign` FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+    `historiales` ADD CONSTRAINT `historiales_created_by_foreign` 
+    FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
-    `bodegas` ADD CONSTRAINT `bodegas_id_responsable_foreign` FOREIGN KEY(`id_responsable`) REFERENCES `users`(`id`);
+    `productos` ADD CONSTRAINT `productos_update_by_foreign` 
+    FOREIGN KEY(`update_by`) REFERENCES `users`(`id`);
+
 ALTER TABLE
-    `historiales` ADD CONSTRAINT `historiales_id_inventario_foreign` FOREIGN KEY(`id_inventario`) REFERENCES `inventarios`(`id`);
+    `bodegas` ADD CONSTRAINT `bodegas_id_responsable_foreign` 
+    FOREIGN KEY(`id_responsable`) REFERENCES `users`(`id`);
+
 ALTER TABLE
-    `inventarios` ADD CONSTRAINT `inventarios_created_by_foreign` FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+    `historiales` ADD CONSTRAINT `historiales_id_inventario_foreign` 
+    FOREIGN KEY(`id_inventario`) REFERENCES `inventarios`(`id`);
+
 ALTER TABLE
-    `historiales` ADD CONSTRAINT `historiales_id_bodega_destino_foreign` FOREIGN KEY(`id_bodega_destino`) REFERENCES `bodegas`(`id`);
+    `inventarios` ADD CONSTRAINT `inventarios_created_by_foreign` 
+    FOREIGN KEY(`created_by`) REFERENCES `users`(`id`);
+
+ALTER TABLE
+    `historiales` ADD CONSTRAINT `historiales_id_bodega_destino_foreign` 
+    FOREIGN KEY(`id_bodega_destino`) REFERENCES `bodegas`(`id`);
+
 ALTER TABLE db_inventario.inventarios
     ADD CONSTRAINT fk_bodega FOREIGN KEY(`id_bodega`) REFERENCES `bodegas`(`id`);
 
