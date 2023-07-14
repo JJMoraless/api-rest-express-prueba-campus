@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+const { DB_USER, DB_PASSWORD, PORT, DB  } = process.env;
 
 const getConnection = async () => {
   try {
@@ -12,9 +13,8 @@ const getConnection = async () => {
   } catch (error) {
     console.log(error.message);
     console.log("*********** conexion fallida *********");
-    return 
+    return error.message;
   }
-  
 };
 
 
