@@ -7,26 +7,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Expose, Type, Transform } from "class-transformer";
-export class bodegasDTO {
-    constructor(nom_user, responsableID, estado_user) {
-        this.nombre = nom_user;
-        this.id_responsable = responsableID;
-        this.estado = estado_user;
+import { Expose, Transform } from "class-transformer";
+export class inventarioDTO {
+    constructor(cantidad, idProducto, origen, destino) {
+        this.cantidad = cantidad;
+        this.idProducto = idProducto;
+        this.origen = origen;
+        this.destino = destino;
     }
 }
 __decorate([
-    Expose({ name: "nombre" }),
-    Type(() => String),
-    __metadata("design:type", String)
-], bodegasDTO.prototype, "nombre", void 0);
-__decorate([
-    Expose({ name: "id_responsable" }),
+    Expose({ name: "cantidad" }),
     Transform(({ value }) => parseInt(value), { toClassOnly: true }),
     __metadata("design:type", Number)
-], bodegasDTO.prototype, "id_responsable", void 0);
+], inventarioDTO.prototype, "cantidad", void 0);
 __decorate([
-    Expose({ name: "estado" }),
+    Expose({ name: "idProducto" }),
     Transform(({ value }) => parseInt(value), { toClassOnly: true }),
     __metadata("design:type", Number)
-], bodegasDTO.prototype, "estado", void 0);
+], inventarioDTO.prototype, "idProducto", void 0);
+__decorate([
+    Expose({ name: "idOrigen" }),
+    Transform(({ value }) => parseInt(value), { toClassOnly: true }),
+    __metadata("design:type", Number)
+], inventarioDTO.prototype, "origen", void 0);
+__decorate([
+    Expose({ name: "idOrigen" }),
+    Transform(({ value }) => parseInt(value), { toClassOnly: true }),
+    __metadata("design:type", Number)
+], inventarioDTO.prototype, "destino", void 0);
